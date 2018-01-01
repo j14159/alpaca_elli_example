@@ -1,0 +1,34 @@
+module endpoint
+
+export handle/2, handle_event
+
+import_type elli_request.req
+
+{-
+  Response code, list of header key-values, body text.  Technically elli expects
+  a binary but all of Alpaca's strings are binaries anyhow.
+ -}
+type response = (int, list (string, string), string)
+
+let handle r _ =
+  let _ = print "Elli request record:~n~p~n" [r] in
+  handle (elli_request.request r)
+
+let handle Request {method=:GET, path=["test"]} = respond 200 ["Test endpoint."]
+
+let handle Request {method=:GET, path=["hello", name]} = respond 200 ["Hello, ", name]
+        
+let handle _ = respond 404 ["Not found"]
+      
+let handle_event _ _ _ = :ok
+
+val respond: fn int (list string) -> response
+let respond code body_parts =
+  let body_str = beam :erlang :iolist_to_binary [[body_parts]] with
+                 | s, is_string s -> s
+  in (code, [], body_str)
+  
+-- Simple helper for debugging output:
+val print 'a: fn string (list 'a) -> ()
+let print fmt x = beam :io :format [fmt, x] with
+  _ -> ()

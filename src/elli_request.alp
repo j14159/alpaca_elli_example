@@ -1,0 +1,10 @@
+module elli_request
+
+export request
+export_type req
+    
+type req = Request {method: atom, path: list string}
+
+-- Working off include/elli.hrl for the record format in tuple form here.
+let request (_, method, path, _, _, version, headers, body, pid, socket, callback) =
+  Request {method=method, path=path}

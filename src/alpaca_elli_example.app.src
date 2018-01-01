@@ -1,0 +1,16 @@
+{application, alpaca_elli_example,
+ [{description, "Example use of elli from the Alpaca programming language"},
+  {vsn, "0.1.0"},
+  {registered, []},
+  {mod, { alpaca_elli_example_app, []}},
+  {applications,
+   [kernel,
+    stdlib
+   ]},
+  {env,[]},
+  {modules, []},
+
+  {maintainers, []},
+  {licenses, ["Apache 2.0"]},
+  {links, []}
+ ]}.
